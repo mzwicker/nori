@@ -90,6 +90,7 @@ add_executable(nori
 )
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
+target_compile_definitions(nori PUBLIC NO_GUI=0)
 
 # The following lines build the warping test application
 add_executable(warptest

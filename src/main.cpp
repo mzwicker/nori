@@ -75,9 +75,11 @@ static void render(Scene *scene, const std::string &filename) {
     ImageBlock result(outputSize, camera->getReconstructionFilter());
     result.clear();
 
+#if NO_GUI==0
     /* Create a window that visualizes the partially rendered result */
     nanogui::init();
     NoriScreen *screen = new NoriScreen(result);
+#endif
 
     /* Do the following in parallel and asynchronously */
     std::thread render_thread([&] {
@@ -121,14 +123,18 @@ static void render(Scene *scene, const std::string &filename) {
         cout << "done. (took " << timer.elapsedString() << ")" << endl;
     });
 
+#if NO_GUI==0
     /* Enter the application main loop */
     nanogui::mainloop();
+#endif
 
     /* Shut down the user interface */
     render_thread.join();
 
+#if NO_GUI==0
     delete screen;
     nanogui::shutdown();
+#endif
 
     /* Now turn the rendered image block into
        a properly normalized bitmap */
